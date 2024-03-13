@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import Button from "../Button";
 
@@ -10,8 +10,9 @@ import { useEscapeKey } from "../../hooks/useEscapeKey";
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
-  const { onPopToast, message, variant, setMessage, setVariant, setToasts } =
-    useContext(ToastContext);
+  const [message, setMessage] = useState("");
+  const [variant, setVariant] = useState("notice");
+  const { onPopToast, setToasts } = useContext(ToastContext);
 
   useEscapeKey(setToasts);
 
@@ -67,7 +68,15 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button onClick={onPopToast}>Pop Toast!</Button>
+            <Button
+              onClick={() => {
+                onPopToast({ message, variant });
+                setMessage("");
+                setVariant("notice");
+              }}
+            >
+              Pop Toast!
+            </Button>
           </div>
         </div>
       </div>

@@ -3,20 +3,20 @@ import React, { createContext, useCallback, useState } from "react";
 export const ToastContext = createContext();
 
 function ToastProvider({ children }) {
-  const [message, setMessage] = useState("");
-  const [variant, setVariant] = useState("notice");
   const [toasts, setToasts] = useState([]);
 
-  const onPopToast = useCallback(() => {
-    const newToast = {
-      id: Math.random(),
-      message,
-      variant,
-    };
-    setMessage("");
-    setVariant("notice");
-    setToasts([...toasts, newToast]);
-  }, [message, toasts, variant]);
+  const onPopToast = useCallback(
+    ({ message, variant }) => {
+      const newToast = {
+        id: Math.random(),
+        message,
+        variant,
+      };
+
+      setToasts([...toasts, newToast]);
+    },
+    [toasts]
+  );
 
   const onDismissToast = useCallback(
     (toastId) => {
@@ -32,10 +32,6 @@ function ToastProvider({ children }) {
     setToasts,
     onPopToast,
     onDismissToast,
-    message,
-    setMessage,
-    variant,
-    setVariant,
   };
   return (
     <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
